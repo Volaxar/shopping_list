@@ -1,0 +1,23 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  {% block title %} {% endblock %}
+
+  <link rel="stylesheet" href="{% static 'shoplist/css/style.css' %}">
+
+  <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+  <script src={% static 'shoplist/js/script.js' %}></script>
+</head>
+<body>
+<div class="content">
+  {% block content %} {% endblock %}
+</div>
+</body>
+</html>

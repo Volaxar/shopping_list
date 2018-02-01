@@ -1,0 +1,13 @@
+{% extends 'shoplist/base.html' %}
+
+{% block title %}
+  <title>Список покупок</title>
+{% endblock %}
+
+{% block content %}
+  <form id="purchase-form" action="#">
+    {% include 'shoplist/_purchase_list.html' %}
+  </form>
+
+  <a id="add-purchase" href="#">Добавить</a>
+{% endblock %}

@@ -1,0 +1,41 @@
+<input id="purchase-filter" name="filter" type="text" title="Фильтр" value="{{ name_filter }}">
+<input id="purchase-filter-button" type="button" value="Применить">
+
+{% load shoplist_extras %}
+{% csrf_token %}
+
+<table id="purchase-list">
+
+  <th class="purchase-sort" data-th-name="purchased">Куплен {% get_sort 'purchased' %}</th>
+  <th class="purchase-sort" data-th-name="name">Продукт {% get_sort 'name' %}</th>
+  <th class="purchase-sort" data-th-name="amount">Кол-во {% get_sort 'amount' %}</th>
+  <th class="purchase-sort" data-th-name="unit">Ед. изм. {% get_sort 'unit' %}</th>
+  <th class="purchase-sort" data-th-name="category">Категория {% get_sort 'category' %}</th>
+  <th class="purchase-sort" data-th-name="priority">Приоритет {% get_sort 'priority' %}</th>
+  <th></th>
+  <th></th>
+
+  {% if purchase_list.count %}
+    {% for purchase in purchase_list %}
+      <tr data-pid="{{ purchase.id }}">
+        <td class="purchase-clickable">
+          <input name="pk" type="hidden" value="{{ purchase.id }}">
+          <input name="purchased" type="checkbox" title="Куплен" disabled {% is_flag_on purchase.purchased 'checked' %}>
+        </td>
+        <td class="purchase-clickable">{{ purchase.name }}</td>
+        <td class="purchase-clickable">{{ purchase.amount }}</td>
+        <td class="purchase-clickable">{{ purchase.unit.name }}</td>
+        <td class="purchase-clickable">{{ purchase.category.name }}</td>
+        <td class="purchase-clickable">{{ purchase.priority.name }}</td>
+        <td><input class="edit-purchase" type="button" value="Ред-ть"></td>
+        <td><input class="del-purchase" type="button" value="Удалить"></td>
+      </tr>
+    {% endfor %}
+  {% else %}
+    <tr>
+      <td colspan="8">
+        Список покупок пуст
+      </td>
+    </tr>
+  {% endif %}
+</table>
