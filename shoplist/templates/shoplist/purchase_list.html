@@ -6,8 +6,12 @@
 
 {% block content %}
   <form id="purchase-form" action="#">
-    {% include 'shoplist/_purchase_list.html' %}
+    <input id="purchase-filter" name="filter" type="text" title="Фильтр" value="{{ name_filter }}" autofocus>
+
+    <div id="purchase-form-content">
+      {% include 'shoplist/_purchase_list.html' %}
+    </div>
   </form>
 
-  <a id="add-purchase" href="#">Добавить</a>
+  <input id="add-purchase" type="button" value="Добавить">
 {% endblock %}
