@@ -1,15 +1,14 @@
-<tr id="purchase-new-line" data-pid="{{ purchase.id }}">
+<tr>
   <td>
     {{ form.id }}
     {{ form.purchased }}
+    {{ form.name }}
   </td>
-
-  <td>{{ form.name }}</td>
   <td>{{ form.amount }}</td>
   <td>{{ form.unit }}</td>
   <td>{{ form.category }}</td>
   <td>{{ form.priority }}</td>
 
-  <td><input id="save-purchase" type="submit" value="Сох-ть"></td>
+  <td><input type="submit" value="Сох-ть" data-pid="{{ purchase.id }}"></td>
   <td><input id="cancel-purchase" type="button" value="Отмена"></td>
 </tr>

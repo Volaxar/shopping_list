@@ -29,7 +29,7 @@ $(function () {
         switchEditMode(true);
 
         var purchaseLine = $(this).parent().parent();
-        var pId = purchaseLine.data('pid');
+        var pId = $(this).data('pid');
 
         $.get('/shoplist/' + pId + '/', function (data) {
             purchaseLine.replaceWith(data);
@@ -38,8 +38,7 @@ $(function () {
 
     //Удалить покупку
     $purchaseForm.on('click', '.del-purchase', function () {
-        var purchaseLine = $(this).parent().parent();
-        var pId = purchaseLine.data('pid');
+        var pId = $(this).data('pid');
         var token = $purchaseForm.find('[name="csrfmiddlewaretoken"]').serialize();
 
         $.post('/shoplist/' + pId + '/delete/', token, function (data) {
@@ -53,9 +52,9 @@ $(function () {
 
         var actionUrl = '/shoplist/create/';
 
-        var primaryKeyField = $('#id_id');
-        if (primaryKeyField.attr('value')) {
-            actionUrl = '/shoplist/' + primaryKeyField.attr('value') + '/';
+        var pkField = $('#id_id');
+        if (pkField.attr('value')) {
+            actionUrl = '/shoplist/' + pkField.attr('value') + '/';
         }
 
         var data = $purchaseForm.serialize();

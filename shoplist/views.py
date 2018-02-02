@@ -27,9 +27,11 @@ class PurchaseList(ListView):
     def get_queryset(self):
         r = self.request
 
-        name_filter = r.GET['filter'] if 'filter' in r.GET else r.session.get('filter', '')
-
-        r.session['filter'] = name_filter
+        if 'filter' in r.GET:
+            name_filter = r.GET['filter']
+            r.session['filter'] = name_filter
+        else:
+            name_filter = r.session.get('filter', '')
 
         order_by = r.session.get('order_by', 'name')
         order_by_direction = r.session.get('order_direction', '')

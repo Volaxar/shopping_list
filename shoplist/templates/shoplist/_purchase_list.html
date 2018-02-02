@@ -3,7 +3,6 @@
 
 <table id="purchase-list">
 
-  <th data-th-name="purchased">Куплен {% get_sort 'purchased' %}</th>
   <th data-th-name="name">Продукт {% get_sort 'name' %}</th>
   <th data-th-name="amount">Кол-во {% get_sort 'amount' %}</th>
   <th data-th-name="unit">Ед. изм. {% get_sort 'unit' %}</th>
@@ -14,20 +13,19 @@
 
   {% if purchase_list.count %}
     {% for purchase in purchase_list %}
-      <tr data-pid="{{ purchase.id }}">
-        <td><input type="checkbox" title="Куплен" disabled {% is_flag_on purchase.purchased 'checked' %}></td>
-        <td>{{ purchase.name }}</td>
+      <tr>
+        <td class="{% is_flag_on purchase.purchased 'purchased' %}">{{ purchase.name }}</td>
         <td>{{ purchase.amount }}</td>
         <td>{{ purchase.unit.name }}</td>
         <td>{{ purchase.category.name }}</td>
         <td>{{ purchase.priority.name }}</td>
-        <td><input class="edit-purchase" type="button" value="Ред-ть"></td>
-        <td><input class="del-purchase" type="button" value="Удалить"></td>
+        <td><input class="edit-purchase" type="button" value="Ред-ть" data-pid="{{ purchase.id }}"></td>
+        <td><input class="del-purchase" type="button" value="Удалить" data-pid="{{ purchase.id }}"></td>
       </tr>
     {% endfor %}
   {% else %}
     <tr>
-      <td colspan="8">
+      <td colspan="7">
         Список покупок пуст
       </td>
     </tr>

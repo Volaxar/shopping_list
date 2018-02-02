@@ -2,3 +2,12 @@ th {
   text-align: left;
   cursor: pointer;
 }
+
+.purchased {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+#id_purchased {
+  display: none;
+}
