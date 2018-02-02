@@ -12,8 +12,6 @@ $(function () {
 
     // Добавить покупку
     $('#add-purchase').click(function (e) {
-        e.preventDefault();
-
         disableOtherButtons();
 
         if ($('#purchase-new-line').length === 0) {
@@ -37,14 +35,12 @@ $(function () {
 
     //Удалить покупку
     $purchaseForm.on('click', '.del-purchase', function (e) {
-        e.preventDefault();
-
         var purchaseLine = $(this).parent().parent();
         var pId = purchaseLine.data('pid');
         var token = $purchaseForm.find('[name="csrfmiddlewaretoken"]').serialize();
 
         $.post('/shoplist/' + pId + '/delete/', token, function (data) {
-            $('#purchase-list').html(data);
+            $purchaseForm.html(data);
         });
     });
 
@@ -54,8 +50,8 @@ $(function () {
 
         var actionUrl = '/shoplist/create/';
 
-        var $primaryKeyField = $('#purchase-pk');
-        if ($primaryKeyField.length === 1) {
+        var $primaryKeyField = $('#id_id');
+        if ($primaryKeyField.attr('value')) {
             actionUrl = '/shoplist/' + $primaryKeyField.attr('value') + '/';
         }
 
@@ -90,7 +86,7 @@ $(function () {
     });
 
     // Сортировать список
-    $purchaseForm.on('click', '.purchase-sort', function () {
+    $purchaseForm.on('click', 'th[data-th-name]', function () {
         var thName = $(this).data('th-name');
 
         $.get('/shoplist/', 'order_by=' + thName, function (data) {

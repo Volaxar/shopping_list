@@ -16,8 +16,3 @@ def get_sort(context, order_by):
 @register.simple_tag
 def is_flag_on(flag, value, default=''):
     return value if flag else default
-
-
-@register.simple_tag
-def is_means_equal(left, right, value, default=''):
-    return value if left == right else default

@@ -1,54 +1,16 @@
-{% load shoplist_extras %}
-
 <tr id="purchase-new-line" data-pid="{{ purchase.id }}">
   <td>
-    {% if purchase.id %}
-      <input id="purchase-pk" name="pk" type="hidden" value="{{ purchase.id }}">
-    {% endif %}
-
-    <input name="purchased" type="checkbox" title="Куплен" {% is_flag_on purchase.purchased 'checked' %}>
+    {{ form.id }}
+    {{ form.purchased }}
   </td>
 
-  <td>
-    <input name="name" type="text" title="Название" value="{{ purchase.name }}">
-  </td>
-
-  <td>
-    <input name="amount" type="text" title="Количество" value="{% is_flag_on purchase.amount purchase.amount 1 %}">
-  </td>
-
-  <td>
-    <select name="unit" title="Ед. изм.">
-      {% for unit in unit_list %}
-        <option value="{{ unit.id }}" {% is_means_equal unit.id purchase.unit.id 'selected' %}>
-          {{ unit.name }}
-        </option>
-      {% endfor %}
-    </select>
-  </td>
-
-  <td>
-    <select name="category" title="Категории">
-      {% for category in category_list %}
-        <option value="{{ category.id }}" {% is_means_equal category.id purchase.category.id 'selected' %}>
-          {{ category.name }}
-        </option>
-      {% endfor %}
-    </select>
-  </td>
-
-  <td>
-    <select name="priority" title="Приоритеты">
-      {% for priority in priority_list %}
-        <option value="{{ priority.id }}" {% is_means_equal priority.id purchase.priority.id 'selected'%}>
-          {{ priority.name }}
-        </option>
-      {% endfor %}
-    </select>
-  </td>
+  <td>{{ form.name }}</td>
+  <td>{{ form.amount }}</td>
+  <td>{{ form.unit }}</td>
+  <td>{{ form.category }}</td>
+  <td>{{ form.priority }}</td>
 
   <td><input id="save-purchase" type="submit" value="Сох-ть"></td>
-
   <td><input id="cancel-purchase" type="button" value="Отмена"></td>
 
 </tr>
