@@ -2,6 +2,7 @@ $(function () {
 
     var $purchaseForm = $('#purchase-form');
     var $purchaseFormContent = $('#purchase-form-content');
+    var $token = $purchaseForm.find('[name="csrfmiddlewaretoken"]').serialize();
     var $filterTimer;
     var $isEditMode = false;
 
@@ -39,9 +40,8 @@ $(function () {
     //Удалить покупку
     $purchaseForm.on('click', '.del-purchase', function () {
         var pId = $(this).parents('.purchase-line').data('pid');
-        var token = $purchaseForm.find('[name="csrfmiddlewaretoken"]').serialize();
 
-        $.post('/shoplist/' + pId + '/delete/', token, function (data) {
+        $.post('/shoplist/' + pId + '/delete/', $token, function (data) {
             $purchaseFormContent.html(data);
         });
     });
@@ -110,7 +110,7 @@ $(function () {
     $purchaseForm.on('click', '.purchase-name', function () {
         var pId = $(this).parents('.purchase-line').data('pid');
 
-        $.get('/shoplist/' + pId + '/change_status/', function (data) {
+        $.post('/shoplist/' + pId + '/change_status/', $token, function (data) {
             $purchaseFormContent.html(data);
         })
     });

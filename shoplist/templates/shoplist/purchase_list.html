@@ -6,6 +6,8 @@
 
 {% block content %}
   <form id="purchase-form" action="#">
+    {% csrf_token %}
+
     <input id="purchase-filter" name="filter" type="text" title="Фильтр" value="{{ name_filter }}" autofocus>
 
     <div id="purchase-form-content">
