@@ -14,7 +14,7 @@
   {% if purchase_list.count %}
     {% for purchase in purchase_list %}
       <tr>
-        <td class="{% is_flag_on purchase.purchased 'purchased' %}">{{ purchase.name }}</td>
+        <td class="{% is_flag_on purchase.status 'purchased' %}">{{ purchase.name }}</td>
         <td>{{ purchase.amount }}</td>
         <td>{{ purchase.unit.name }}</td>
         <td>{{ purchase.category.name }}</td>

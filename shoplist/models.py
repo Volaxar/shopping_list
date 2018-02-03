@@ -31,7 +31,7 @@ class Purchase(models.Model):
     unit = models.ForeignKey(Unit, verbose_name='Ед. изм.', help_text='Единица измерения')
     category = models.ForeignKey(Category, verbose_name='Категория', help_text='Категория товара')
     priority = models.ForeignKey(Priority, verbose_name='Приоритет', help_text='Приориет покупки товара')
-    purchased = models.BooleanField(verbose_name='Куплен?', help_text='Товар куплен?')
+    status = models.BooleanField(verbose_name='Статус', help_text='Товар куплен?')
 
     def get_absolute_url(self):
         return reverse('purchase-list')

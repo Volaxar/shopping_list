@@ -51,7 +51,7 @@ class PurchaseList(ListView):
 
 class PurchaseCreate(CreateView):
     model = Purchase
-    fields = ['name', 'amount', 'unit', 'category', 'priority', 'purchased']
+    fields = ['name', 'amount', 'unit', 'category', 'priority', 'status']
 
 
 class PurchaseUpdate(UpdateView):
