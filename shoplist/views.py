@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -62,3 +63,14 @@ class PurchaseUpdate(UpdateView):
 class PurchaseDelete(DeleteView):
     model = Purchase
     success_url = reverse_lazy('purchase-list')
+
+
+def change_status(request, pk):
+    try:
+        purchase = Purchase.objects.get(id=pk)
+        purchase.status = not purchase.status
+        purchase.save()
+    except Purchase.DoesNotExist:
+        pass
+
+    return redirect('purchase-list')

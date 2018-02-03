@@ -3,6 +3,10 @@ th {
   cursor: pointer;
 }
 
+.purchase-name {
+  cursor: pointer;
+}
+
 .purchased {
   text-decoration: line-through;
   opacity: 0.5;

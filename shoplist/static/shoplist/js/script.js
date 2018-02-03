@@ -105,4 +105,13 @@ $(function () {
             $purchaseFormContent.html(data);
         });
     });
+
+    // Изменение статуса покупки
+    $purchaseForm.on('click', '.purchase-name', function () {
+        var pId = $(this).parents('.purchase-line').data('pid');
+
+        $.get('/shoplist/' + pId + '/change_status/', function (data) {
+            $purchaseFormContent.html(data);
+        })
+    });
 });
