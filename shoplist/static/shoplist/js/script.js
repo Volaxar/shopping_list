@@ -28,8 +28,8 @@ $(function () {
     $purchaseForm.on('click', '.edit-purchase', function () {
         switchEditMode(true);
 
-        var purchaseLine = $(this).parent().parent();
-        var pId = $(this).data('pid');
+        var purchaseLine = $(this).parents('.purchase-line');
+        var pId = purchaseLine.data('pid');
 
         $.get('/shoplist/' + pId + '/', function (data) {
             purchaseLine.replaceWith(data);
@@ -38,7 +38,7 @@ $(function () {
 
     //Удалить покупку
     $purchaseForm.on('click', '.del-purchase', function () {
-        var pId = $(this).data('pid');
+        var pId = $(this).parents('.purchase-line').data('pid');
         var token = $purchaseForm.find('[name="csrfmiddlewaretoken"]').serialize();
 
         $.post('/shoplist/' + pId + '/delete/', token, function (data) {
