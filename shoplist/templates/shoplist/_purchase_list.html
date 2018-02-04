@@ -8,7 +8,6 @@
   <th data-th-name="category">Категория {% get_sort 'category' %}</th>
   <th data-th-name="priority">Приоритет {% get_sort 'priority' %}</th>
   <th></th>
-  <th></th>
 
   {% if purchase_list.count %}
     {% for purchase in purchase_list %}
@@ -18,13 +17,22 @@
         <td>{{ purchase.unit.name }}</td>
         <td>{{ purchase.category.name }}</td>
         <td>{{ purchase.priority.name }}</td>
-        <td><input class="edit-purchase" type="button" value="Ред-ть"></td>
-        <td><input class="del-purchase" type="button" value="Удалить"></td>
+        <td class="purchase-grp-btn">
+          <div class="btn-group">
+            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a class="edit-purchase" href="#">Изменить</a></li>
+              <li><a class="del-purchase" href="#">Удалить</a></li>
+            </ul>
+          </div>
+        </td>
       </tr>
     {% endfor %}
   {% else %}
     <tr>
-      <td colspan="7">
+      <td colspan="6">
         Список покупок пуст
       </td>
     </tr>

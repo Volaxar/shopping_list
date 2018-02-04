@@ -13,6 +13,14 @@ $(function () {
         $('#purchase-filter').prop('disabled', mode);
         $('#add-purchase').prop('disabled', mode);
 
+        var btns = $('.purchase-grp-btn button');
+        if (mode) {
+            btns.addClass('disabled');
+        } else {
+            btns.removeClass('disabled');
+        }
+
+
         $isEditMode = mode;
     };
 
@@ -26,7 +34,9 @@ $(function () {
     });
 
     // Редактировать покупку
-    $purchaseForm.on('click', '.edit-purchase', function () {
+    $purchaseForm.on('click', '.edit-purchase', function (e) {
+        e.preventDefault();
+
         switchEditMode(true);
 
         var purchaseLine = $(this).parents('.purchase-line');
@@ -38,7 +48,9 @@ $(function () {
     });
 
     //Удалить покупку
-    $purchaseForm.on('click', '.del-purchase', function () {
+    $purchaseForm.on('click', '.del-purchase', function (e) {
+        e.preventDefault();
+
         var pId = $(this).parents('.purchase-line').data('pid');
 
         $.post('/shoplist/' + pId + '/delete/', $token, function (data) {
@@ -65,8 +77,12 @@ $(function () {
         });
     });
 
+    $purchaseForm.on('click', '.ok-purchase', function () {
+        $purchaseForm.submit();
+    });
+
     // Отменить добавление покупки
-    $purchaseForm.on('click', '#cancel-purchase', function () {
+    $purchaseForm.on('click', '.cancel-purchase', function () {
         $.get('/shoplist/', function (data) {
             $purchaseFormContent.html(data);
             switchEditMode(false);
@@ -90,6 +106,7 @@ $(function () {
             filterList();
         }
     });
+
     $purchaseForm.on('input', '#purchase-filter', function () {
         clearTimeout($filterTimer);
         $filterTimer = setTimeout(filterList, 500);
