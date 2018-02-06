@@ -87,12 +87,6 @@ $(function () {
         });
     });
 
-    // Временное для тестирования валидации,
-    // при удалении поменять тип кнопки на submit
-    $dictForm.on('click', '.ok-dict', function () {
-        $dictForm.submit();
-    });
-
     // Отменить изменения
     $dictForm.on('click', '.cancel-dict', function () {
         $.get('/' + $modelName + '/list/', function (data) {
@@ -139,6 +133,8 @@ $(function () {
 
     // Изменение статуса покупки
     $dictForm.on('click', '.mn-purchase > td:not(.click-ignore)', function () {
+        if ($isEditMode) return;
+
         var pId = $(this).parent().data('pid');
         var token = 'csrfmiddlewaretoken=' + $token;
 
