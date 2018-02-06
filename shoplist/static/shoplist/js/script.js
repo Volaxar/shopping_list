@@ -136,10 +136,16 @@ $(function () {
         if ($isEditMode) return;
 
         var pId = $(this).parent().data('pid');
-        var token = 'csrfmiddlewaretoken=' + $token;
 
-        $.post('/purchase/' + pId + '/change_status/', token, function (data) {
-            $dictFormContent.html(data);
+        $.ajax({
+            url: '/purchase/' + pId + '/',
+            type: 'PATCH',
+            headers: {
+                'X-CSRFTOKEN': $token
+            },
+            success: function (data) {
+                $dictFormContent.html(data);
+            }
         })
     });
 

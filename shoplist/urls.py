@@ -8,8 +8,6 @@ urlpatterns = [
     url(r'^priority/list/$', views.PriorityList.as_view(), name='priority-list'),
     url(r'^purchase/list/$', views.PurchaseList.as_view(), name='purchase-list'),
 
-    url(r'^purchase/(?P<pk>[0-9]+)/change_status/$', views.change_status, name='change-status'),
-
     url(r'^unit/(?P<pk>[0-9]*)', views.UnitView.as_view()),
     url(r'^category/(?P<pk>[0-9]*)', views.CategoryView.as_view()),
     url(r'^priority/(?P<pk>[0-9]*)', views.PriorityView.as_view()),

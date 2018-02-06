@@ -4,18 +4,8 @@ from django.views.generic import ListView
 from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView, DeletionMixin
 
+from shoplist.forms import PurchaseForm
 from shoplist.models import Purchase, Unit, Category, Priority
-
-
-def change_status(request, pk):
-    try:
-        purchase = Purchase.objects.get(id=pk)
-        purchase.status = not purchase.status
-        purchase.save()
-    except Purchase.DoesNotExist:
-        pass
-
-    return redirect('purchase-list')
 
 
 class DictList(ListView):
@@ -40,6 +30,9 @@ class DictList(ListView):
         return context
 
     def delete(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
 
 
@@ -145,4 +138,13 @@ class PriorityView(DictView):
 
 class PurchaseView(DictView):
     model = Purchase
-    fields = ['id', 'name', 'amount', 'unit', 'category', 'priority']
+    form_class = PurchaseForm
+
+    @staticmethod
+    def patch(request, *args, **kwargs):
+        pk = kwargs.get('pk', '')
+
+        if pk:
+            Purchase.change_status(pk)
+
+        return redirect('purchase-list')

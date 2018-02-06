@@ -61,7 +61,7 @@ class Priority(DictModel):
 
 class Purchase(DictModel):
     name = models.CharField('Название', max_length=250, help_text='Название товара', unique=True)
-    amount = models.IntegerField('Количество', help_text='Количество товара', default=1)
+    amount = models.IntegerField('Кол-во', help_text='Количество товара', default=1)
     unit = models.ForeignKey(Unit, verbose_name='Ед. изм.', help_text='Единица измерения')
     category = models.ForeignKey(Category, verbose_name='Категория', help_text='Категория товара')
     priority = models.ForeignKey(Priority, verbose_name='Приоритет', help_text='Приориет покупки товара')
@@ -70,6 +70,15 @@ class Purchase(DictModel):
     class Meta(DictModel.Meta):
         verbose_name = 'Покупка'
         verbose_name_plural = 'Покупки'
+
+    @classmethod
+    def change_status(cls, pk):
+        try:
+            purchase = cls.objects.get(id=pk)
+            purchase.status = not purchase.status
+            purchase.save()
+        except Purchase.DoesNotExist:
+            pass
 
     @staticmethod
     def get_absolute_url():
