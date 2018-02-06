@@ -1,0 +1,17 @@
+{% extends 'shoplist/base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+  <form id="dict-form" action="#" data-model-name="{{ model_name }}">
+    {% csrf_token %}
+
+    {% block filter %}{% endblock %}
+
+    <div id="dict-form-content">
+      {% block list %}{% endblock %}
+    </div>
+  </form>
+
+  <button id="create-dict" type="button" class="btn btn-default btn-md dis-prop">Добавить</button>
+{% endblock %}

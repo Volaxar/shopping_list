@@ -1,40 +1,13 @@
+{% extends 'shoplist/_base_list.html' %}
+
 {% load shoplist_extras %}
 
-<table id="purchase-list">
-
-  <th data-th-name="name">Продукт {% get_sort 'name' %}</th>
-  <th data-th-name="amount">Кол-во {% get_sort 'amount' %}</th>
-  <th data-th-name="unit">Ед. изм. {% get_sort 'unit' %}</th>
-  <th data-th-name="category">Категория {% get_sort 'category' %}</th>
-  <th data-th-name="priority">Приоритет {% get_sort 'priority' %}</th>
+{% block table_header %}
+  {% for field in fields %}
+    <th class="mn-{{ model_name }}" data-th-name="{{ field }}">
+      {% get_field_name object_list.model field %}
+      {% get_sort field %}
+    </th>
+  {% endfor %}
   <th></th>
-
-  {% if purchase_list.count %}
-    {% for purchase in purchase_list %}
-      <tr class="purchase-line" data-pid="{{ purchase.id }}">
-        <td class="purchase-name {{ purchase.status|yesno:"purchased," }}">{{ purchase.name }}</td>
-        <td>{{ purchase.amount }}</td>
-        <td>{{ purchase.unit.name }}</td>
-        <td>{{ purchase.category.name }}</td>
-        <td>{{ purchase.priority.name }}</td>
-        <td class="purchase-grp-btn">
-          <div class="btn-group">
-            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-menu-hamburger"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <li><a class="edit-purchase" href="#">Изменить</a></li>
-              <li><a class="del-purchase" href="#">Удалить</a></li>
-            </ul>
-          </div>
-        </td>
-      </tr>
-    {% endfor %}
-  {% else %}
-    <tr>
-      <td colspan="6">
-        Список покупок пуст
-      </td>
-    </tr>
-  {% endif %}
-</table>
+{% endblock %}

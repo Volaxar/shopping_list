@@ -1,15 +1,22 @@
 th {
   text-align: left;
-  cursor: pointer;
 }
 
-.purchase-name {
+.mn-purchase {
   cursor: pointer;
 }
 
 .purchased {
-  text-decoration: line-through;
-  opacity: 0.5;
+  color: gray;
+}
+
+.purchased > td:not([class='click-ignore'])::after {
+  content: '';
+  display: block;
+  position: relative;
+  top: -0.65em;
+  outline: 1px solid gray;
+  opacity: 0.3;
 }
 
 .error-lists {

@@ -21,3 +21,8 @@ def get_field_name(model, field):
 @register.simple_tag
 def get_form_field_name(form, field):
     return get_field_name(form._meta.model, field)
+
+
+@register.simple_tag
+def get_field(obj, field_name):
+    return obj.__getattribute__(field_name)

@@ -1,143 +1,14 @@
 $(function () {
 
-    var $purchaseForm = $('#purchase-form');
-    var $purchaseFormContent = $('#purchase-form-content');
-    var $token = $purchaseForm.find('[name="csrfmiddlewaretoken"]').serialize();
+    var $dictForm = $('#dict-form');
+    var $dictFormContent = $('#dict-form-content');
+    var $modelName = $dictForm.data('model-name');
+    var $token = $dictForm.find('[name="csrfmiddlewaretoken"]').attr('value');
+
     var $filterTimer;
     var $isEditMode = false;
 
     // Переключение режимов: редактирование/просмотр
-    var switchEditMode = function (mode) {
-        $('.edit-purchase').prop('disabled', mode);
-        $('.del-purchase').prop('disabled', mode);
-        $('#purchase-filter').prop('disabled', mode);
-        $('#add-purchase').prop('disabled', mode);
-
-        var btns = $('.purchase-grp-btn button');
-        if (mode) {
-            btns.addClass('disabled');
-        } else {
-            btns.removeClass('disabled');
-        }
-
-
-        $isEditMode = mode;
-    };
-
-    // Добавить покупку
-    $('#add-purchase').click(function () {
-        switchEditMode(true);
-
-        $.get('/create/', function (data) {
-            $('#purchase-list').append(data);
-        })
-    });
-
-    // Редактировать покупку
-    $purchaseForm.on('click', '.edit-purchase', function (e) {
-        e.preventDefault();
-
-        switchEditMode(true);
-
-        var purchaseLine = $(this).parents('.purchase-line');
-        var pId = purchaseLine.data('pid');
-
-        $.get('/' + pId + '/', function (data) {
-            purchaseLine.replaceWith(data);
-        });
-    });
-
-    //Удалить покупку
-    $purchaseForm.on('click', '.del-purchase', function (e) {
-        e.preventDefault();
-
-        var pId = $(this).parents('.purchase-line').data('pid');
-
-        $.post('/' + pId + '/delete/', $token, function (data) {
-            $purchaseFormContent.html(data);
-        });
-    });
-
-    // Сохранить изменения при добавлении или изменении покупки
-    $purchaseForm.submit(function (e) {
-        e.preventDefault();
-
-        var actionUrl = '/create/';
-
-        var pkField = $('#id_id');
-        if (pkField.attr('value')) {
-            actionUrl = '/' + pkField.attr('value') + '/';
-        }
-
-        var data = $purchaseForm.serialize();
-
-        $.post(actionUrl, data, function (data) {
-            $purchaseFormContent.html(data);
-            switchEditMode(false);
-        });
-    });
-
-    $purchaseForm.on('click', '.ok-purchase', function () {
-        $purchaseForm.submit();
-    });
-
-    // Отменить добавление покупки
-    $purchaseForm.on('click', '.cancel-purchase', function () {
-        $.get('/', function (data) {
-            $purchaseFormContent.html(data);
-            switchEditMode(false);
-        });
-    });
-
-    // Отфильтровать список
-    var filterList = function () {
-        clearTimeout($filterTimer);
-
-        var filter = $('#purchase-filter').serialize();
-
-        $.get('/', filter, function (data) {
-            $purchaseFormContent.html(data);
-        });
-    };
-
-    $purchaseForm.on('keypress', '#purchase-filter', function (e) {
-        if (e.which === 13) {
-            e.preventDefault();
-            filterList();
-        }
-    });
-
-    $purchaseForm.on('input', '#purchase-filter', function () {
-        clearTimeout($filterTimer);
-        $filterTimer = setTimeout(filterList, 500);
-    });
-
-    // Сортировать список
-    $purchaseForm.on('click', 'th[data-th-name]', function () {
-        if ($isEditMode) return;
-
-        var thName = $(this).data('th-name');
-
-        $.get('/', 'order_by=' + thName, function (data) {
-            $purchaseFormContent.html(data);
-        });
-    });
-
-    // Изменение статуса покупки
-    $purchaseForm.on('click', '.purchase-name', function () {
-        var pId = $(this).parents('.purchase-line').data('pid');
-
-        $.post('/' + pId + '/change_status/', $token, function (data) {
-            $purchaseFormContent.html(data);
-        })
-    });
-
-    // -------------------------------------------------------------
-    var $dictForm = $('#dict-form');
-    var $dictFormContent = $('#dict-form-content');
-    var $modelName = $dictForm.data('model-name');
-    var $dictToken = $dictForm.find('[name="csrfmiddlewaretoken"]').attr('value');
-
     var switchEditModeDict = function (mode) {
         $('.dis-prop').prop('disabled', mode);
 
@@ -151,6 +22,7 @@ $(function () {
         $isEditMode = mode;
     };
 
+    // Добавить элемент списка
     $('#create-dict').click(function () {
         switchEditModeDict(true);
 
@@ -159,6 +31,7 @@ $(function () {
         });
     });
 
+    // Редактировать элемент списка
     $dictForm.on('click', '.edit-dict', function (e) {
         e.preventDefault();
 
@@ -172,6 +45,7 @@ $(function () {
         });
     });
 
+    // Удалить элемент списка
     $dictForm.on('click', '.del-dict', function (e) {
         e.preventDefault();
 
@@ -180,7 +54,7 @@ $(function () {
         $.ajax({
             url: '/' + $modelName + '/' + pid + '/',
             headers: {
-                'X-CSRFTOKEN': $dictToken
+                'X-CSRFTOKEN': $token
             },
             type: 'DELETE',
             dataType: 'html',
@@ -190,6 +64,7 @@ $(function () {
         });
     });
 
+    // Сохранить изменения
     $dictForm.submit(function (e) {
         e.preventDefault();
 
@@ -203,7 +78,7 @@ $(function () {
         var data = $dictForm.serialize();
 
         $.post(url, data, function (data, status, xhr) {
-            if(xhr.responseJSON) {
+            if (xhr.responseJSON) {
                 $('.dict-new-line').replaceWith(data.response);
             } else {
                 $dictFormContent.html(data);
@@ -212,16 +87,64 @@ $(function () {
         });
     });
 
-    // Временное для тестирования валидации
+    // Временное для тестирования валидации,
+    // при удалении поменять тип кнопки на submit
     $dictForm.on('click', '.ok-dict', function () {
         $dictForm.submit();
     });
 
+    // Отменить изменения
     $dictForm.on('click', '.cancel-dict', function () {
         $.get('/' + $modelName + '/list/', function (data) {
             $dictFormContent.html(data);
             switchEditModeDict(false);
         });
+    });
+
+    // Отфильтровать список
+    var filterList = function () {
+        clearTimeout($filterTimer);
+
+        var filter = $('#purchase-filter').serialize();
+
+        $.get('/purchase/list/', filter, function (data) {
+            $dictFormContent.html(data);
+        });
+    };
+
+    // Фильтрация при нажатии Enter
+    $dictForm.on('keypress', '#purchase-filter', function (e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            filterList();
+        }
+    });
+
+    // Фильрация по таймеру
+    $dictForm.on('input', '#purchase-filter', function () {
+        clearTimeout($filterTimer);
+        $filterTimer = setTimeout(filterList, 500);
+    });
+
+    // Сортировать список
+    $dictForm.on('click', 'th.mn-purchase', function () {
+        if ($isEditMode) return;
+
+        var thName = $(this).data('th-name');
+
+        $.get('/purchase/list/', 'order_by=' + thName, function (data) {
+            $dictFormContent.html(data);
+        });
+    });
+
+    // Изменение статуса покупки
+    $dictForm.on('click', '.mn-purchase > td:not(.click-ignore)', function () {
+        var pId = $(this).parent().data('pid');
+        var token = 'csrfmiddlewaretoken=' + $token;
+
+        $.post('/purchase/' + pId + '/change_status/', token, function (data) {
+            $dictFormContent.html(data);
+        })
     });
 
 });

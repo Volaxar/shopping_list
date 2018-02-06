@@ -1,19 +1,21 @@
-{% extends 'shoplist/base.html' %}
+{% extends 'shoplist/base_list.html' %}
 
 {% block title %}
   <title>Список покупок</title>
 {% endblock %}
 
-{% block content %}
-  <form id="purchase-form" action="#">
-    {% csrf_token %}
+{% block filter %}
+  <input
+      class="dis-prop"
+      id="purchase-filter"
+      name="filter"
+      type="text"
+      title="Фильтр"
+      value="{{ name_filter }}"
+      autofocus
+  >
+{% endblock %}
 
-    <input id="purchase-filter" name="filter" type="text" title="Фильтр" value="{{ name_filter }}" autofocus>
-
-    <div id="purchase-form-content">
-      {% include 'shoplist/_purchase_list.html' %}
-    </div>
-  </form>
-
-  <input id="add-purchase" type="button" value="Добавить">
+{% block list %}
+  {% include 'shoplist/_purchase_list.html' %}
 {% endblock %}

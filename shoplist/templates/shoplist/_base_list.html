@@ -1,0 +1,25 @@
+{% load shoplist_extras %}
+
+<table id="dict-list">
+  {% block table_header %}{% endblock %}
+
+  {% if object_list.count %}
+    {% for obj in object_list %}
+      <tr class="dict-line mn-{{ model_name }}{{ obj.status|yesno:' purchased,' }}" data-pid="{{ obj.id }}">
+        {% for field in fields %}
+          <td>{% get_field obj field %}</td>
+        {% endfor %}
+
+        <td class="click-ignore">{% include 'shoplist/_btn_menu.html' %}</td>
+      </tr>
+    {% endfor %}
+
+  {% else %}
+    <tr>
+      <td colspan="{{ fields|length }}">
+        Список пуст
+      </td>
+    </tr>
+  {% endif %}
+
+</table>

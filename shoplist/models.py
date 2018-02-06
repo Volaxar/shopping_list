@@ -16,6 +16,9 @@ class DictModel(models.Model):
     def get_verbose_name_plural(cls):
         return cls._meta.verbose_name_plural
 
+    def __str__(self):
+        return self.__getattribute__('name')
+
     class Meta:
         abstract = True
 
@@ -27,9 +30,6 @@ class Unit(DictModel):
         verbose_name = 'Ед. измерения'
         verbose_name_plural = 'Ед. измерения'
 
-    def __str__(self):
-        return self.name
-
     @staticmethod
     def get_absolute_url():
         return reverse('unit-list')
@@ -37,14 +37,10 @@ class Unit(DictModel):
 
 class Category(DictModel):
     name = models.CharField('Название', max_length=50)
-    color = models.PositiveIntegerField('Цвет')
 
     class Meta(DictModel.Meta):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
-
-    def __str__(self):
-        return self.name
 
     @staticmethod
     def get_absolute_url():
@@ -53,29 +49,25 @@ class Category(DictModel):
 
 class Priority(DictModel):
     name = models.CharField('Название', max_length=50)
-    value = models.SmallIntegerField('Приоритет')
 
     class Meta(DictModel.Meta):
         verbose_name = 'Приоритет'
         verbose_name_plural = 'Приоритет'
-
-    def __str__(self):
-        return self.name
 
     @staticmethod
     def get_absolute_url():
         return reverse('priority-list')
 
 
-class Purchase(models.Model):
+class Purchase(DictModel):
     name = models.CharField('Название', max_length=250, help_text='Название товара')
     amount = models.IntegerField('Количество', help_text='Количество товара', default=1)
     unit = models.ForeignKey(Unit, verbose_name='Ед. изм.', help_text='Единица измерения')
     category = models.ForeignKey(Category, verbose_name='Категория', help_text='Категория товара')
     priority = models.ForeignKey(Priority, verbose_name='Приоритет', help_text='Приориет покупки товара')
-    status = models.BooleanField('Статус', help_text='Товар куплен?')
+    status = models.BooleanField('Статус', help_text='Товар куплен?', default=False)
 
-    class Meta:
+    class Meta(DictModel.Meta):
         verbose_name = 'Покупка'
         verbose_name_plural = 'Покупки'
 

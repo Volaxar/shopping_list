@@ -1,17 +1,9 @@
-{% extends 'shoplist/base.html' %}
+{% extends 'shoplist/base_list.html' %}
 
 {% block title %}
   <title>Справочник - {{ model_verbose_name }}</title>
 {% endblock %}
 
-{% block content %}
-  <form id="dict-form" action="#" data-model-name="{{ model_name }}">
-    {% csrf_token %}
-
-    <div id="dict-form-content">
-      {% include 'shoplist/_dict_list.html' %}
-    </div>
-  </form>
-
-  <button id="create-dict" type="button" class="btn btn-default btn-sm dis-prop">Добавить</button>
+{% block list %}
+    {% include 'shoplist/_dict_list.html' %}
 {% endblock %}
