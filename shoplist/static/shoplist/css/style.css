@@ -12,6 +12,14 @@ th {
   opacity: 0.5;
 }
 
-#id_status {
-  display: none;
+.error-lists {
+  padding: 10px;
+  color: #D63301;
+  background-color: #FFCCBA;
+  font-size: 12px;
+}
+
+.error-lists > td > div {
+  border: 1px solid;
+  color: #D63301;
 }

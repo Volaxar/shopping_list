@@ -2,27 +2,69 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 
-class Unit(models.Model):
+class DictModel(models.Model):
+
+    @classmethod
+    def get_name(cls):
+        return cls.__name__.lower()
+
+    @classmethod
+    def get_verbose_name(cls):
+        return cls._meta.verbose_name
+
+    @classmethod
+    def get_verbose_name_plural(cls):
+        return cls._meta.verbose_name_plural
+
+    class Meta:
+        abstract = True
+
+
+class Unit(DictModel):
     name = models.CharField('Название', max_length=15)
+
+    class Meta(DictModel.Meta):
+        verbose_name = 'Ед. измерения'
+        verbose_name_plural = 'Ед. измерения'
 
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_absolute_url():
+        return reverse('unit-list')
 
-class Category(models.Model):
+
+class Category(DictModel):
     name = models.CharField('Название', max_length=50)
     color = models.PositiveIntegerField('Цвет')
 
+    class Meta(DictModel.Meta):
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_absolute_url():
+        return reverse('category-list')
 
-class Priority(models.Model):
+
+class Priority(DictModel):
     name = models.CharField('Название', max_length=50)
     value = models.SmallIntegerField('Приоритет')
 
+    class Meta(DictModel.Meta):
+        verbose_name = 'Приоритет'
+        verbose_name_plural = 'Приоритет'
+
     def __str__(self):
         return self.name
+
+    @staticmethod
+    def get_absolute_url():
+        return reverse('priority-list')
 
 
 class Purchase(models.Model):
@@ -33,5 +75,10 @@ class Purchase(models.Model):
     priority = models.ForeignKey(Priority, verbose_name='Приоритет', help_text='Приориет покупки товара')
     status = models.BooleanField('Статус', help_text='Товар куплен?')
 
-    def get_absolute_url(self):
+    class Meta:
+        verbose_name = 'Покупка'
+        verbose_name_plural = 'Покупки'
+
+    @staticmethod
+    def get_absolute_url():
         return reverse('purchase-list')

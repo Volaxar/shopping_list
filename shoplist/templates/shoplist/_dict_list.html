@@ -1,0 +1,24 @@
+{% load shoplist_extras %}
+
+<table id="dict-list">
+  {% for field in fields %}
+    <th>{% get_field_name object_list.model field %}</th>
+  {% endfor %}
+
+  {% if object_list.count %}
+    {% for obj in object_list.values %}
+      <tr class="dict-line" data-pid="{{ obj.id }}">
+        {% for key, value in obj.items %}
+          {% if key in fields %}
+            <td>{{ value }}</td>
+          {% endif %}
+        {% endfor %}
+
+        <td>
+          {% include 'shoplist/_btn_menu.html' %}
+        </td>
+      </tr>
+    {% endfor %}
+  {% endif %}
+
+</table>

@@ -1,0 +1,32 @@
+{% load shoplist_extras %}
+
+<tr class="dict-new-line">
+  {% for field in form %}
+    <td>
+      {{ field }}
+    </td>
+  {% endfor %}
+
+  <td>
+    {% if form.initial.id %}
+      <input name="id" id="id_id" type="hidden" value="{{ form.initial.id }}">
+    {% endif %}
+
+    {% include 'shoplist/_btn_ok_cancel.html' %}
+  </td>
+</tr>
+
+{% if form.non_field_errors or form.errors %}
+  <tr class="error-lists">
+    <td colspan="{{ form.fields|length }}">
+      <div>
+        {{ form.non_field_errors }}
+
+        {% for field, errors in form.errors.items %}
+          <b>{% get_form_field_name form field %}</b>
+          {{ errors }}
+        {% endfor %}
+      </div>
+    </td>
+  </tr>
+{% endif %}

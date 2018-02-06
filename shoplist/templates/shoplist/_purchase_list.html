@@ -12,7 +12,7 @@
   {% if purchase_list.count %}
     {% for purchase in purchase_list %}
       <tr class="purchase-line" data-pid="{{ purchase.id }}">
-        <td class="purchase-name {% is_flag_on purchase.status 'purchased' %}">{{ purchase.name }}</td>
+        <td class="purchase-name {{ purchase.status|yesno:"purchased," }}">{{ purchase.name }}</td>
         <td>{{ purchase.amount }}</td>
         <td>{{ purchase.unit.name }}</td>
         <td>{{ purchase.category.name }}</td>

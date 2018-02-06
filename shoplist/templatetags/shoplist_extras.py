@@ -14,5 +14,10 @@ def get_sort(context, order_by):
 
 
 @register.simple_tag
-def is_flag_on(flag, value, default=''):
-    return value if flag else default
+def get_field_name(model, field):
+    return model._meta.get_field(field).verbose_name
+
+
+@register.simple_tag
+def get_form_field_name(form, field):
+    return get_field_name(form._meta.model, field)

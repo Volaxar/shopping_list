@@ -28,7 +28,7 @@ $(function () {
     $('#add-purchase').click(function () {
         switchEditMode(true);
 
-        $.get('/shoplist/create/', function (data) {
+        $.get('/create/', function (data) {
             $('#purchase-list').append(data);
         })
     });
@@ -42,7 +42,7 @@ $(function () {
         var purchaseLine = $(this).parents('.purchase-line');
         var pId = purchaseLine.data('pid');
 
-        $.get('/shoplist/' + pId + '/', function (data) {
+        $.get('/' + pId + '/', function (data) {
             purchaseLine.replaceWith(data);
         });
     });
@@ -53,7 +53,7 @@ $(function () {
 
         var pId = $(this).parents('.purchase-line').data('pid');
 
-        $.post('/shoplist/' + pId + '/delete/', $token, function (data) {
+        $.post('/' + pId + '/delete/', $token, function (data) {
             $purchaseFormContent.html(data);
         });
     });
@@ -62,11 +62,11 @@ $(function () {
     $purchaseForm.submit(function (e) {
         e.preventDefault();
 
-        var actionUrl = '/shoplist/create/';
+        var actionUrl = '/create/';
 
         var pkField = $('#id_id');
         if (pkField.attr('value')) {
-            actionUrl = '/shoplist/' + pkField.attr('value') + '/';
+            actionUrl = '/' + pkField.attr('value') + '/';
         }
 
         var data = $purchaseForm.serialize();
@@ -83,7 +83,7 @@ $(function () {
 
     // Отменить добавление покупки
     $purchaseForm.on('click', '.cancel-purchase', function () {
-        $.get('/shoplist/', function (data) {
+        $.get('/', function (data) {
             $purchaseFormContent.html(data);
             switchEditMode(false);
         });
@@ -95,7 +95,7 @@ $(function () {
 
         var filter = $('#purchase-filter').serialize();
 
-        $.get('/shoplist/', filter, function (data) {
+        $.get('/', filter, function (data) {
             $purchaseFormContent.html(data);
         });
     };
@@ -118,7 +118,7 @@ $(function () {
 
         var thName = $(this).data('th-name');
 
-        $.get('/shoplist/', 'order_by=' + thName, function (data) {
+        $.get('/', 'order_by=' + thName, function (data) {
             $purchaseFormContent.html(data);
         });
     });
@@ -127,8 +127,101 @@ $(function () {
     $purchaseForm.on('click', '.purchase-name', function () {
         var pId = $(this).parents('.purchase-line').data('pid');
 
-        $.post('/shoplist/' + pId + '/change_status/', $token, function (data) {
+        $.post('/' + pId + '/change_status/', $token, function (data) {
             $purchaseFormContent.html(data);
         })
     });
+
+    // -------------------------------------------------------------
+    var $dictForm = $('#dict-form');
+    var $dictFormContent = $('#dict-form-content');
+    var $modelName = $dictForm.data('model-name');
+    var $dictToken = $dictForm.find('[name="csrfmiddlewaretoken"]').attr('value');
+
+    var switchEditModeDict = function (mode) {
+        $('.dis-prop').prop('disabled', mode);
+
+        var disItems = $('.dis-class');
+        if (mode) {
+            disItems.addClass('disabled');
+        } else {
+            disItems.removeClass('disabled');
+        }
+
+        $isEditMode = mode;
+    };
+
+    $('#create-dict').click(function () {
+        switchEditModeDict(true);
+
+        $.get('/' + $modelName + '/', function (data) {
+            $('#dict-list').append(data);
+        });
+    });
+
+    $dictForm.on('click', '.edit-dict', function (e) {
+        e.preventDefault();
+
+        switchEditModeDict(true);
+
+        var dictLine = $(this).parents('.dict-line');
+        var pid = dictLine.data('pid');
+
+        $.get('/' + $modelName + '/' + pid + '/', function (data) {
+            dictLine.replaceWith(data);
+        });
+    });
+
+    $dictForm.on('click', '.del-dict', function (e) {
+        e.preventDefault();
+
+        var pid = $(this).parents('.dict-line').data('pid');
+
+        $.ajax({
+            url: '/' + $modelName + '/' + pid + '/',
+            headers: {
+                'X-CSRFTOKEN': $dictToken
+            },
+            type: 'DELETE',
+            dataType: 'html',
+            success: function (data) {
+                $dictFormContent.html(data);
+            }
+        });
+    });
+
+    $dictForm.submit(function (e) {
+        e.preventDefault();
+
+        var pid = $('#id_id').attr('value');
+        var url = '/' + $modelName + '/';
+
+        if (pid) {
+            url += pid + '/';
+        }
+
+        var data = $dictForm.serialize();
+
+        $.post(url, data, function (data, status, xhr) {
+            if(xhr.responseJSON) {
+                $('.dict-new-line').replaceWith(data.response);
+            } else {
+                $dictFormContent.html(data);
+                switchEditModeDict(false);
+            }
+        });
+    });
+
+    // Временное для тестирования валидации
+    $dictForm.on('click', '.ok-dict', function () {
+        $dictForm.submit();
+    });
+
+    $dictForm.on('click', '.cancel-dict', function () {
+        $.get('/' + $modelName + '/list/', function (data) {
+            $dictFormContent.html(data);
+            switchEditModeDict(false);
+        });
+    });
+
 });
