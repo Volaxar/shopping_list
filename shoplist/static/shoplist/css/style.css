@@ -1,13 +1,41 @@
-th {
-  text-align: left;
+.fn-amount, .fn-unit {
+  width: 100px;
+}
+
+.fn-category, .fn-priority {
+  width: 200px;
 }
 
 .mn-purchase {
   cursor: pointer;
 }
 
+.click-ignore {
+  min-width: 63px;
+  width: 63px;
+}
+
 .purchased {
   color: gray;
+}
+
+.dict-new-line .form-control {
+  width: 100%;
+  min-width: 80px;
+}
+
+.dict-new-line > td:not([class='click-ignore']) {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+.dict-line > td {
+  padding-left: 19px !important;
+}
+
+#purchase-filter {
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 .purchased > td:not([class='click-ignore'])::after {
@@ -19,14 +47,24 @@ th {
   opacity: 0.3;
 }
 
-.error-lists {
-  padding: 10px;
-  color: #D63301;
-  background-color: #FFCCBA;
-  font-size: 12px;
+.error-lists:hover {
+  background-color: transparent !important;
 }
 
 .error-lists > td > div {
+  padding: 10px;
   border: 1px solid;
+  background-color: #FFCCBA;
   color: #D63301;
+  font-size: 12px;
+}
+
+.error-field {
+  border-color: #D63301;
+  box-shadow: none;
+}
+
+.error-field:focus {
+  border-color: #D63301;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(214, 51, 1, .6);
 }

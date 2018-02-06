@@ -4,11 +4,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {% block title %} {% endblock %}
 
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="{% static 'shoplist/css/style.css' %}">
+
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
   <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -20,22 +27,24 @@
 </head>
 <body>
 
-  <ul class="nav nav-pills">
-    <li><a href="{% url 'purchase-list' %}">Список покупок</a></li>
-    <li class="dropdown">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#">Справочники <span class="caret"></span></a>
+  <div class="container">
+    <ul class="nav nav-pills">
+      <li><a href="{% url 'purchase-list' %}">Список покупок</a></li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Справочники <span class="caret"></span></a>
 
-      <ul class="dropdown-menu">
-        <li><a href="{% url 'unit-list' %}">Ед. измерения</a></li>
-        <li><a href="{% url 'category-list' %}">Категории</a></li>
-        <li><a href="{% url 'priority-list' %}">Приоритеты</a></li>
-        <li><a href="#">Товары</a></li>
-      </ul>
-    </li>
-  </ul>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'unit-list' %}">Ед. измерения</a></li>
+          <li><a href="{% url 'category-list' %}">Категории</a></li>
+          <li><a href="{% url 'priority-list' %}">Приоритеты</a></li>
+          <li><a href="#">Товары</a></li>
+        </ul>
+      </li>
+    </ul>
 
-  <div class="content">
-    {% block content %} {% endblock %}
+    <div class="content">
+      {% block content %} {% endblock %}
+    </div>
   </div>
 </body>
 </html>

@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView, DeletionMixin
 
-from shoplist.forms import PurchaseForm
+from shoplist.forms import PurchaseForm, UnitForm, CategoryForm, PriorityForm
 from shoplist.models import Purchase, Unit, Category, Priority
 
 
@@ -123,17 +123,17 @@ class DictView(SingleObjectTemplateResponseMixin, BaseDictView):
 
 class UnitView(DictView):
     model = Unit
-    fields = '__all__'
+    form_class = UnitForm
 
 
 class CategoryView(DictView):
     model = Category
-    fields = '__all__'
+    form_class = CategoryForm
 
 
 class PriorityView(DictView):
     model = Priority
-    fields = '__all__'
+    form_class = PriorityForm
 
 
 class PurchaseView(DictView):

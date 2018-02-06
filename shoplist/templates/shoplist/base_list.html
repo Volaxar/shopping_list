@@ -3,7 +3,7 @@
 {% block title %}{% endblock %}
 
 {% block content %}
-  <form id="dict-form" action="#" data-model-name="{{ model_name }}">
+  <form id="dict-form" action="#" data-model-name="{{ model_name }}" class="form-inline" role="form">
     {% csrf_token %}
 
     {% block filter %}{% endblock %}
@@ -13,5 +13,5 @@
     </div>
   </form>
 
-  <button id="create-dict" type="button" class="btn btn-default btn-md dis-prop">Добавить</button>
+  <button id="create-dict" type="button" class="btn btn-default btn-md btn-primary dis-prop">Добавить</button>
 {% endblock %}

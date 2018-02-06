@@ -27,7 +27,7 @@ $(function () {
         switchEditModeDict(true);
 
         $.get('/' + $modelName + '/', function (data) {
-            $('#dict-list').append(data);
+            $('#dict-list').find('tbody').append(data);
         });
     });
 
@@ -79,6 +79,7 @@ $(function () {
 
         $.post(url, data, function (data, status, xhr) {
             if (xhr.responseJSON) {
+                $('.error-lists').remove();
                 $('.dict-new-line').replaceWith(data.response);
             } else {
                 $dictFormContent.html(data);

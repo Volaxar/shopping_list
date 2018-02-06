@@ -2,12 +2,12 @@
 
 <tr class="dict-new-line">
   {% for field in form %}
-    <td>
+    <td class="fn-{{ field.html_name }}">
       {{ field }}
     </td>
   {% endfor %}
 
-  <td>
+  <td class="click-ignore">
     {% if form.initial.id %}
       <input name="id" id="id_id" type="hidden" value="{{ form.initial.id }}">
     {% endif %}
@@ -18,7 +18,7 @@
 
 {% if form.non_field_errors or form.errors %}
   <tr class="error-lists">
-    <td colspan="{{ form.fields|length }}">
+    <td colspan="{{ form.fields|length|add:1 }}">
       <div>
         {{ form.non_field_errors }}
 

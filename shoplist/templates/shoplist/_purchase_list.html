@@ -4,7 +4,7 @@
 
 {% block table_header %}
   {% for field in fields %}
-    <th class="mn-{{ model_name }}" data-th-name="{{ field }}">
+    <th class="text-center mn-{{ model_name }}" data-th-name="{{ field }}">
       {% get_field_name object_list.model field %}
       {% get_sort field %}
     </th>

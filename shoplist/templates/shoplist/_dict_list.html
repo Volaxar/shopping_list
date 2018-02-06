@@ -4,7 +4,7 @@
 
 {% block table_header %}
   {% for field in fields %}
-    <th>{% get_field_name object_list.model field %}</th>
+    <th class="text-center">{% get_field_name object_list.model field %}</th>
   {% endfor %}
   <th></th>
 {% endblock %}

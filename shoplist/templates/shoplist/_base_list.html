@@ -1,13 +1,13 @@
 {% load shoplist_extras %}
 
-<table id="dict-list">
+<table id="dict-list" class="table table-hover table-striped">
   {% block table_header %}{% endblock %}
 
   {% if object_list.count %}
     {% for obj in object_list %}
       <tr class="dict-line mn-{{ model_name }}{{ obj.status|yesno:' purchased,' }}" data-pid="{{ obj.id }}">
         {% for field in fields %}
-          <td>{% get_field obj field %}</td>
+          <td class="fn-{{ field }}">{% get_field obj field %}</td>
         {% endfor %}
 
         <td class="click-ignore">{% include 'shoplist/_btn_menu.html' %}</td>
