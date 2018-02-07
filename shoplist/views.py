@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView, DeletionMixin
+from django.http.response import Http404
 
 from shoplist.forms import PurchaseForm, UnitForm, CategoryForm, PriorityForm
 from shoplist.models import Purchase, Unit, Category, Priority
@@ -101,12 +102,21 @@ class DictView(SingleObjectTemplateResponseMixin, BaseDictView):
     template_name = 'shoplist/dict_form.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if kwargs.get('pk', ''):
-            self.object = self.get_object()
-        else:
-            self.object = None
+        self.object = None
+
+        try:
+            if kwargs.get('pk', ''):
+                self.object = self.get_object()
+        except Http404:
+            pass
 
         return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if not request.is_ajax():
+            return redirect('purchase-list')
+
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
