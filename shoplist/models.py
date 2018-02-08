@@ -71,15 +71,10 @@ class Purchase(DictModel):
         verbose_name = 'Покупка'
         verbose_name_plural = 'Покупки'
 
-    @classmethod
-    def change_status(cls, pk):
-        try:
-            purchase = cls.objects.get(id=pk)
-            purchase.status = not purchase.status
-            purchase.save()
-        except Purchase.DoesNotExist:
-            pass
-
     @staticmethod
     def get_absolute_url():
         return reverse('purchase-list')
+
+    def change_status(self):
+        self.status = not self.status
+        self.save()

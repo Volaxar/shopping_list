@@ -114,7 +114,7 @@ class DictView(SingleObjectTemplateResponseMixin, BaseDictView):
 
     def get(self, request, *args, **kwargs):
         if not request.is_ajax():
-            return redirect('purchase-list')
+            return redirect('%s-list' % self.model.get_name())
 
         return super().get(request, *args, **kwargs)
 
@@ -150,11 +150,8 @@ class PurchaseView(DictView):
     model = Purchase
     form_class = PurchaseForm
 
-    @staticmethod
-    def patch(request, *args, **kwargs):
-        pk = kwargs.get('pk', '')
-
-        if pk:
-            Purchase.change_status(pk)
+    def patch(self, request, *args, **kwargs):
+        if self.object:
+            self.object.change_status()
 
         return redirect('purchase-list')
