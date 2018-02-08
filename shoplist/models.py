@@ -16,6 +16,10 @@ class DictModel(models.Model):
     def get_verbose_name_plural(cls):
         return cls._meta.verbose_name_plural
 
+    @classmethod
+    def get_absolute_url(cls):
+        return reverse('%s-list' % cls.get_name())
+
     def __str__(self):
         return self.__getattribute__('name')
 
@@ -30,10 +34,6 @@ class Unit(DictModel):
         verbose_name = 'Ед. измерения'
         verbose_name_plural = 'Ед. измерения'
 
-    @staticmethod
-    def get_absolute_url():
-        return reverse('unit-list')
-
 
 class Category(DictModel):
     name = models.CharField('Название', max_length=50)
@@ -42,10 +42,6 @@ class Category(DictModel):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
-    @staticmethod
-    def get_absolute_url():
-        return reverse('category-list')
-
 
 class Priority(DictModel):
     name = models.CharField('Название', max_length=50)
@@ -53,10 +49,6 @@ class Priority(DictModel):
     class Meta(DictModel.Meta):
         verbose_name = 'Приоритет'
         verbose_name_plural = 'Приоритет'
-
-    @staticmethod
-    def get_absolute_url():
-        return reverse('priority-list')
 
 
 class Purchase(DictModel):
@@ -70,10 +62,6 @@ class Purchase(DictModel):
     class Meta(DictModel.Meta):
         verbose_name = 'Покупка'
         verbose_name_plural = 'Покупки'
-
-    @staticmethod
-    def get_absolute_url():
-        return reverse('purchase-list')
 
     def change_status(self):
         self.status = not self.status
