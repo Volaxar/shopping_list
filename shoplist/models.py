@@ -5,12 +5,8 @@ from django.db import models
 class DictModel(models.Model):
 
     @classmethod
-    def get_name(cls):
+    def get_model_name(cls):
         return cls.__name__.lower()
-
-    @classmethod
-    def get_verbose_name(cls):
-        return cls._meta.verbose_name
 
     @classmethod
     def get_verbose_name_plural(cls):
@@ -18,7 +14,7 @@ class DictModel(models.Model):
 
     @classmethod
     def get_absolute_url(cls):
-        return reverse('%s-list' % cls.get_name())
+        return reverse('%s-list' % cls.get_model_name())
 
     def __str__(self):
         return self.__getattribute__('name')
@@ -48,7 +44,7 @@ class Priority(DictModel):
 
     class Meta(DictModel.Meta):
         verbose_name = 'Приоритет'
-        verbose_name_plural = 'Приоритет'
+        verbose_name_plural = 'Приоритеты'
 
 
 class Purchase(DictModel):

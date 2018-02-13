@@ -13,7 +13,7 @@ class DictList(ListView):
     fields = []
 
     template_name = 'shoplist/dict_list.html'
-    template_ajax_name = 'shoplist/_dict_list.html'
+    template_ajax_name = 'shoplist/_dict_header.html'
 
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
@@ -25,7 +25,7 @@ class DictList(ListView):
         context = super().get_context_data(**kwargs)
 
         context['fields'] = self.fields
-        context['model_name'] = self.model.get_name()
+        context['model_name'] = self.model.get_model_name()
         context['model_verbose_name'] = self.model.get_verbose_name_plural()
 
         return context
@@ -42,13 +42,13 @@ class PurchaseList(DictList):
     fields = ['name', 'amount', 'unit', 'category', 'priority']
 
     template_name = 'shoplist/purchase_list.html'
-    template_ajax_name = 'shoplist/_purchase_list.html'
+    template_ajax_name = 'shoplist/_purchase_header.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['name_filter'] = self.request.session.get('filter', '')
-        context['order_by'] = self.request.session.get('order_by', '')
+        context['filter'] = self.request.session.get('filter', '')
+        context['order_by'] = self.request.session.get('order_by', 'name')
         context['order_direction'] = self.request.session.get('order_direction', '')
 
         return context
@@ -114,7 +114,7 @@ class DictView(SingleObjectTemplateResponseMixin, BaseDictView):
 
     def get(self, request, *args, **kwargs):
         if not request.is_ajax():
-            return redirect('%s-list' % self.model.get_name())
+            return redirect('%s-list' % self.model.get_model_name())
 
         return super().get(request, *args, **kwargs)
 
